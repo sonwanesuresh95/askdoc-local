@@ -5,3 +5,10 @@ python-docx
 PyMuPDF
 pandas
 openpyxl
+langchain
+chromadb
+sentence-transformers
+langchain-community
+langchain-ollama
+langchain-chroma
+langchain-text-splitters

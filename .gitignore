@@ -209,3 +209,4 @@ __marimo__/
 # include data folder since it is not a Python package
 data/documents/*
 data/parsed_text/*
+data/vector_store/*

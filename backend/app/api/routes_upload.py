@@ -2,6 +2,7 @@ from fastapi import APIRouter, File, UploadFile, HTTPException
 import shutil
 from pathlib import Path
 from app.services.document_parser import parse_document
+from app.services.embedder import chunk_text, embed_and_store
 
 router = APIRouter()
 
@@ -21,11 +22,20 @@ async def upload_file(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     try:
+        # parse document
         parsed_text = parse_document(file_path)
         parsed_path = PARSED_DIR / (file_path.stem + ".txt")
         parsed_path.write_text(parsed_text, encoding="utf-8")
-        
+
+        # embed document
+        chunks = chunk_text(parsed_text, chunk_size=1000)
+        chunk_count = embed_and_store(chunks, doc_id=file.filename)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to parse: {e}")
 
-    return {"filename": file.filename, "status": "uploaded"}
+    return {
+        "filename": file.filename, 
+        "parsed_chunks": chunk_count,
+        "status": "uploaded"
+        }
