@@ -26,5 +26,7 @@ def embed_and_store(chunks: list[str], doc_id: str):
         ids=None,
         metadatas=[{"source": doc_id}] * len(chunks)
     )
+    print(f"[INFO] {len(chunks)} chunks being embedded and stored for {doc_id}")
+
 
     return len(chunks)
