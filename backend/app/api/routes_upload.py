@@ -3,6 +3,10 @@ import shutil
 from pathlib import Path
 from app.services.document_parser import parse_document
 from app.services.embedder import chunk_text, embed_and_store
+import json
+from datetime import datetime
+
+INDEX_PATH = Path("../data/document_index.json")
 
 router = APIRouter()
 
@@ -31,6 +35,9 @@ async def upload_file(file: UploadFile = File(...)):
         chunks = chunk_text(parsed_text, chunk_size=1000)
         chunk_count = embed_and_store(chunks, doc_id=file.filename)
 
+        # save metadata
+        save_metadata(doc_id=file.filename, filename=file.filename)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to parse: {e}")
 
@@ -39,3 +46,14 @@ async def upload_file(file: UploadFile = File(...)):
         "parsed_chunks": chunk_count,
         "status": "uploaded"
         }
+
+def save_metadata(doc_id: str, filename: str):
+    if not INDEX_PATH.exists():
+        INDEX_PATH.write_text(json.dumps({}))
+    
+    index = json.loads(INDEX_PATH.read_text())
+    index[doc_id] = {
+        "filename": filename,
+        "uploaded_at": datetime.now().isoformat()
+    }
+    INDEX_PATH.write_text(json.dumps(index, indent=4))
