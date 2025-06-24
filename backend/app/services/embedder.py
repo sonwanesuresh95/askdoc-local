@@ -1,10 +1,10 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
-from langchain_chroma import Chroma
+from langchain_chroma import Chroma  
 
 from pathlib import Path
 
-PERSIST_DIR = Path("../data/vector_store")
+PERSIST_DIR = Path("../data/vector_store").resolve()
 
 # step 1: Chunk the text
 def chunk_text(text: str, chunk_size: int = 512, chunk_overlap: int = 64) -> list[str]:
@@ -23,10 +23,7 @@ def embed_and_store(chunks: list[str], doc_id: str):
         persist_directory=str(PERSIST_DIR),
         collection_name="askdoc",
         collection_metadata={"hnsw:space": "cosine"},
-        ids=None,
         metadatas=[{"source": doc_id}] * len(chunks)
     )
-    print(f"[INFO] {len(chunks)} chunks being embedded and stored for {doc_id}")
-
 
     return len(chunks)

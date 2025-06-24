@@ -12,6 +12,7 @@ def get_retriever():
     embedding = OllamaEmbeddings(model="mistral")
     vectordb = Chroma(
         embedding_function=embedding,
+        persist_directory="../data/vector_store",
         collection_name=COLLECTION_NAME,
     )
     retriever = vectordb.as_retriever(search_kwargs={"k": 5})
@@ -21,9 +22,6 @@ def answer_question(query: str) -> str:
     retriever = get_retriever()
     llm = ChatOllama(model="mistral")
     docs = retriever.invoke(query)
-    print(f"[INFO] Retrieved {len(docs)} docs for query: {query}")
-    for d in docs:
-        print(f"[CHUNK] {d.page_content[:200]}...")
 
     if not docs:
         return "No relevant content found to answer this question."
