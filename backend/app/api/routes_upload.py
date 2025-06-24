@@ -33,7 +33,13 @@ async def upload_file(file: UploadFile = File(...)):
 
         # embed document
         chunks = chunk_text(parsed_text, chunk_size=1000)
+        print(f"[UPLOAD] Parsed {len(parsed_text)} characters")
+        print(f"[UPLOAD] Generated {len(chunks)} chunks for `{file.filename}`")
+
         chunk_count = embed_and_store(chunks, doc_id=file.filename)
+
+        print(f"[UPLOAD] Stored {chunk_count} chunks for `{file.filename}`")
+
 
         # save metadata
         save_metadata(doc_id=file.filename, filename=file.filename)

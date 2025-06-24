@@ -1,0 +1,13 @@
+Sample Questions:
+
+What are the working hours at Acme Corp?
+
+Expected Answer: 9 AM to 6 PM.
+
+How many paid vacation days are allowed?
+
+Expected Answer: 20 days annually.
+
+Where should an employee report grievances?
+
+Expected Answer: Email HR at hr@acmecorp.com.

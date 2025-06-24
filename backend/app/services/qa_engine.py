@@ -1,10 +1,9 @@
-from langchain_ollama import OllamaEmbeddings
-from langchain_chroma import Chroma
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_ollama import ChatOllama
 from langchain.chains import retrieval
+from langchain_chroma import Chroma
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_ollama import ChatOllama, OllamaEmbeddings
 
 COLLECTION_NAME = "askdoc"
 
@@ -25,7 +24,7 @@ def answer_question(query: str) -> str:
 
     if not docs:
         return "No relevant content found to answer this question."
-
+    
     prompt = PromptTemplate.from_template("""
                                           Answer the following question using the provided context.
                                           If the answer is not in the context, say "Answer not found in document."
@@ -37,8 +36,12 @@ def answer_question(query: str) -> str:
                                           {question}
                                           """)
     
+    def context_text(_):
+        return "\n\n".join(doc.page_content for doc in docs)
+    
+
     chain = (
-        {"context": retriever, "question": RunnablePassthrough()}
+        {"context": context_text, "question": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()

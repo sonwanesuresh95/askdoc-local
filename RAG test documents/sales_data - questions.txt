@@ -1,0 +1,12 @@
+✅ Questions & Expected Answers:
+Q: What is the total revenue for Laptop?
+A: $93,500 + $77,000 = $170,500
+
+Q: Which product sold the most units?
+A: Smartphone (120 units)
+
+Q: What is the total revenue for the North region?
+A: $72,000 (Smartphone) + $77,000 (Laptop) = $149,000
+
+Q: How many units were sold in the West region?
+A: 60 units

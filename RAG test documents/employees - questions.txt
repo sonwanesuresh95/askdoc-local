@@ -1,0 +1,12 @@
+✅ Questions & Expected Answers:
+Q: Who is the highest-paid employee?
+A: David Kim ($99,000)
+
+Q: How many employees are in the Engineering department?
+A: 2 (Alice Smith and David Kim)
+
+Q: Who joined after 2021?
+A: Eva Chen (Joined on 2022-03-01)
+
+Q: What is the average salary of all employees?
+A: $83,800

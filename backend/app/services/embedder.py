@@ -1,6 +1,6 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
-from langchain_chroma import Chroma  
+from langchain_chroma import Chroma
 
 from pathlib import Path
 
@@ -17,13 +17,22 @@ def chunk_text(text: str, chunk_size: int = 512, chunk_overlap: int = 64) -> lis
 
 def embed_and_store(chunks: list[str], doc_id: str):
     embedding = OllamaEmbeddings(model="mistral")  # uses ollama backend
-    vectordb = Chroma.from_texts(
-        texts=chunks,
-        embedding=embedding,
+    vectordb = Chroma(
+        embedding_function=embedding,
         persist_directory=str(PERSIST_DIR),
         collection_name="askdoc",
         collection_metadata={"hnsw:space": "cosine"},
+        )
+
+    # Filter out empty or invalid chunks
+    clean_chunks = [c for c in chunks if c and isinstance(c, str) and c.strip()]
+
+    if not clean_chunks:
+        raise ValueError(f"No valid text chunks found for document `{doc_id}`")
+
+    vectordb.add_texts(
+        texts=clean_chunks,
         metadatas=[{"source": doc_id}] * len(chunks)
-    )
+        )
 
     return len(chunks)

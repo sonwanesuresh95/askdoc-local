@@ -1,0 +1,13 @@
+Sample Questions:
+
+How much weekly exercise is recommended?
+
+Expected Answer: At least 150 minutes per week.
+
+What does a balanced diet consist of?
+
+Expected Answer: Fruits, vegetables, whole grains, lean proteins.
+
+How much water should one drink daily?
+
+Expected Answer: 8 cups.

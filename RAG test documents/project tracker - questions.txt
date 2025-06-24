@@ -1,0 +1,12 @@
+✅ Questions & Expected Answers:
+Q: Who owns the ongoing project?
+A: Neha (Data Pipeline)
+
+Q: What is the end date of the RAG API Dev project?
+A: 2025-01-15
+
+Q: Which projects are marked as Completed?
+A: RAG API Dev, ML Model Tune
+
+Q: Which project started most recently?
+A: UI Revamp (Start date: 2025-03-01)

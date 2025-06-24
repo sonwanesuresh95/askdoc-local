@@ -1,27 +1,28 @@
 from fastapi import APIRouter, HTTPException
 from pathlib import Path
 import json
+from langchain_ollama import OllamaEmbeddings
+from langchain_chroma import Chroma
+from app.services.document_manager import (
+    delete_all_total_documents,
+    load_document_index,
+    delete_document_by_id
+)
+
+PERSIST_DIR = Path("../data/vector_store")
+COLLECTION_NAME = "askdoc"
 
 router = APIRouter()
 INDEX_PATH = Path("../data/document_index.json").resolve()
 
 @router.get("/documents/")
 def list_documents():
-    if not INDEX_PATH.exists():
-        return {}
-    return json.loads(INDEX_PATH.read_text(encoding='utf-8'))
+    return load_document_index(INDEX_PATH)
 
 @router.delete("/documents/{doc_id}/")
 def delete_document(doc_id: str):
-    if not INDEX_PATH.exists():
-        raise HTTPException(status_code=404, detail="Document index not found")
-    
-    index = json.loads(INDEX_PATH.read_text(encoding='utf-8'))
-    
-    if doc_id not in index:
-        raise HTTPException(status_code=404, detail="Document not found")
-    
-    del index[doc_id]
-    INDEX_PATH.write_text(json.dumps(index, indent=2), encoding='utf-8')
-    
-    return {"message": f"Document `{doc_id}` deleted successfully"}
+    return delete_document_by_id(doc_id)
+
+@router.delete("/delete_all_docs/")
+def delete_all_documents():
+    return delete_all_total_documents()

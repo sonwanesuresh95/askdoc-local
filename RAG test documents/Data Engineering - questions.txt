@@ -1,0 +1,13 @@
+Sample Questions:
+
+What is data engineering?
+
+Expected Answer: The practice of designing and building systems for data collection, storage, and analysis.
+
+Which tools are mentioned in the PDF?
+
+Expected Answer: Apache Spark, Kafka, Airflow.
+
+Name two cloud platforms referenced.
+
+Expected Answer: AWS and GCP.
