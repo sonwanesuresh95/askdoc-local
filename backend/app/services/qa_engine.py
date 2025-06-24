@@ -21,6 +21,9 @@ def answer_question(query: str) -> str:
     retriever = get_retriever()
     llm = ChatOllama(model="mistral")
     docs = retriever.invoke(query)
+    print(f"[QUERY] Retrieved {len(docs)} docs for '{query}'")
+    for d in docs:
+        print(f" -> source: {d.metadata.get('source')}, snippet: {d.page_content[:50]}")
 
     if not docs:
         return "No relevant content found to answer this question."
