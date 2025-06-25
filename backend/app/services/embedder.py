@@ -32,7 +32,10 @@ def embed_and_store(chunks: list[str], doc_id: str):
 
     vectordb.add_texts(
         texts=clean_chunks,
-        metadatas=[{"source": doc_id}] * len(chunks)
+        metadatas=[{"source": doc_id}] * len(clean_chunks)
         )
+    
+    vectordb.persist()
+    print(f"[EMBED] Persisted vector store with {len(clean_chunks)} chunks for {doc_id}")
 
     return len(chunks)

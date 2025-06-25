@@ -6,12 +6,18 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 
 COLLECTION_NAME = "askdoc"
+PERSIST_DIR = "../data/vector_store"
 
 def get_retriever():
+    import chromadb
+    client = chromadb.PersistentClient(path=str(PERSIST_DIR))
+    collection = client.get_collection(name=COLLECTION_NAME)
+    if collection.count() == 0:
+        raise ValueError("No vectors available in store. Please upload documents first.")
     embedding = OllamaEmbeddings(model="mistral")
     vectordb = Chroma(
         embedding_function=embedding,
-        persist_directory="../data/vector_store",
+        persist_directory=PERSIST_DIR,
         collection_name=COLLECTION_NAME,
     )
     retriever = vectordb.as_retriever(search_kwargs={"k": 5})
